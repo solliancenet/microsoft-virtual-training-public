@@ -1,0 +1,58 @@
+﻿function ConvertObject($data)
+{
+    $str = "";
+    foreach($c in $data)
+    {
+        $str += $c;
+    }
+
+    return $str;
+}
+
+function ConvertObjectToJson($data)
+{
+    $json = ConvertObject $data;
+
+    return ConvertFrom-json $json;
+}
+
+az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+$accountName = "cjgaz204"
+$containerName = "blobs"
+$blobName = "CreateDeployContainer.txt"
+$fileName = "CreateDeployContainer.txt"
+
+remove-item $fileName -ea silentlycontinue;
+add-content $fileName "Hello World";
+
+az storage account create --name $accountName --location $location --resource-group $rgName --sku Standard_LRS --kind StorageV2
+
+$sa = ConvertObjectToJson $(az storage account keys list --account-name $accountName --resource-group $rgName)
+$key = $sa[0].value;
+
+az storage container create --account-name $accountName --name $containerName
+az storage container create --account-name $accountName --name "$($containerName)2"
+
+az storage blob upload --account-name $accountName --container-name $containerName --name $blobName --file $fileName 
+
+az storage blob metadata update --account-name $accountName --container-name $containerName --name $blobName --metadata "author=info@solliance.net" "type=blobfile" 
+
+add-content $fileName "Hello Galaxy";
+
+#az storage blob update --account-name $accountName --container-name $containerName --name $blobName
+$json = ConvertObjectToJson $(az storage blob show --account-name $accountName --container-name $containerName --name $blobName)
+
+$json = ConvertObjectToJson $(az storage blob url --account-name $accountName --container-name $containerName --name $blobName)
+
+az storage blob copy start --account-name $accountName --account-key $key --destination-container "$($containerName)2" --destination-blob $blobName --source-uri $json --auth-mode key
+
+az storage blob delete --account-name $accountName --container-name $containerName --name $blobName 
+
+$env:AZCOPY_USER_AGENT_PREFIX = "Microsoft Azure Storage Explorer, 1.12.0, win32, ";
+./azcopy.exe copy "https://cjgaz204.blob.core.windows.net/blobcopy/*?sv=2018-03-28&ss=b&srt=co&sp=rl&se=2020-03-19T00%3A58%3A10Z&sig=3P6TzhirpJKO9zqm9Fxx%2BvaD5g3WOHBRansHswQpsXQ%3D" "https://cjgml5796987077.blob.core.windows.net/blobcopy/?se=2020-04-11T00%3A58%3A25Z&sp=rwl&sv=2018-03-28&sr=c&sig=QYqDy72zziwKvT93bhxK4OLf%2BwHFyRtE8cvvoXMkNmE%3D" --overwrite=prompt --recursive --list-of-files "C:\Users\given\AppData\Local\Temp\stg-exp-azcopy-87a519aa-64f2-4740-a4c7-d84207e8ebaa.txt" --s2s-preserve-access-tier=false;
+$env:AZCOPY_USER_AGENT_PREFIX = "";

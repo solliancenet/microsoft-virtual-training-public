@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast launch="app-defined-string">
+  <visual>
+    <binding template="ToastGeneric">
+      <text>Toast - Rich Visual Content</text>
+      <text>Beautiful notification!</text>
+      <text>Check more!</text>
+      <image placement="appLogoOverride" src="Assets/MicrosoftLogo.png" />
+      <image placement="inline" src="Assets/Windows10Logo.png" />
+    </binding>
+  </visual>
+</toast>

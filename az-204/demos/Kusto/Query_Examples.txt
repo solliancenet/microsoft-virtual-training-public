@@ -1,0 +1,48 @@
+﻿#https://docs.microsoft.com/en-us/azure/azure-monitor/log-query/examples
+#https://github.com/MicrosoftDocs/LogAnalyticsExamples
+
+Event
+| where EventLog == "Application" 
+| where TimeGenerated > ago(24h) 
+| where RenderedDescription contains "cryptographic"
+
+Heartbeat
+| where TimeGenerated > ago(1d)
+| summarize LastHeartbeat = max(TimeGenerated) by Computer
+| where isnotempty(Computer)
+| where LastHeartbeat < ago(1h)
+
+let start_time=startofday(datetime("2020-01-01"));
+let end_time=now();
+Heartbeat
+| where TimeGenerated > start_time and TimeGenerated < end_time
+| summarize heartbeat_per_hour=count() by bin_at(TimeGenerated, 1h, start_time), Computer
+| extend available_per_hour=iff(heartbeat_per_hour>0, true, false)
+| summarize total_available_hours=countif(available_per_hour==true) by Computer 
+| extend total_number_of_buckets=round((end_time-start_time)/1h)+1
+| extend availability_rate=total_available_hours*100/total_number_of_buckets
+
+search *
+| where TimeGenerated > ago(1h) 
+| summarize CountOfRecords = count() by Type
+| render barchart
+
+SecurityEvent
+| where TimeGenerated > ago(30m) 
+| project Activity 
+| parse Activity with activityID " - " activityDesc
+| summarize count() by activityID
+
+SecurityEvent	
+| sort by TimeGenerated desc
+
+SecurityEvent
+| top 10 by TimeGenerated
+
+SecurityEvent
+| where Level == 8 
+| where EventID == 4672
+
+Syslog | sort by TimeGenerated desc
+| where SeverityLevel == "err"
+| summarize count(), makeset(Facility), makeset(SyslogMessage), makeset(HostIP), makeset(ProcessName), makeset(Type) by Computer

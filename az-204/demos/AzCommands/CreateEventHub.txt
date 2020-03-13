@@ -1,0 +1,20 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+
+$namespace = "cjgaz204ns"
+$hubname = "myhub"
+$ruleName = "Listen"
+
+# Create a resource group
+az group create -n $rgName -l $location
+
+# Create an Event Hubs namespace. Specify a name for the Event Hubs namespace.
+az eventhubs namespace create --name $namespace --resource-group $rgName -l $location
+
+az eventhubs eventhub create --resource-group $rgName --namespace-name $namespace --name $hubname --message-retention 4 --partition-count 15
+
+az eventhubs eventhub authorization-rule create --resource-group $rgName --namespace-name $namespace --eventhub-name $hubname --name $ruleName --rights Listen

@@ -1,0 +1,24 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+$kvName = "az204new"
+$rgName = "cjg-az204"
+$location = "westus2"
+
+az keyvault create --name $kvName --resource-group $rgName --location $location
+
+az keyvault secret set --vault-name $kvName --name "SQLPassword" --value "hVFkk965BuUv"
+
+<#
+az keyvault set-policy --name
+                       [--certificate-permissions {backup, create, delete, deleteissuers, get, getissuers, import, list, listissuers, managecontacts, manageissuers, purge, recover, restore, setissuers, update}]
+                       [--key-permissions {backup, create, decrypt, delete, encrypt, get, import, list, purge, recover, restore, sign, unwrapKey, update, verify, wrapKey}]
+                       [--object-id]
+                       [--resource-group]
+                       [--secret-permissions {backup, delete, get, list, purge, recover, restore, set}]
+                       [--spn]
+                       [--storage-permissions {backup, delete, deletesas, get, getsas, list, listsas, purge, recover, regeneratekey, restore, set, setsas, update}]
+                       [--subscription]
+                       [--upn]
+#>

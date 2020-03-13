@@ -1,0 +1,53 @@
+﻿function ConvertObject($data)
+{
+    $str = "";
+    foreach($c in $data)
+    {
+        $str += $c;
+    }
+
+    return $str;
+}
+
+function ConvertObjectToJson($data)
+{
+    $json = ConvertObject $data;
+
+    return ConvertFrom-json $json;
+}
+
+az login
+
+az account set --subscription "YOURSUB"
+
+$adName = "az204app"
+$tenantDomain = "YOURTENANTID"
+$uniqueGUID = [Guid]::NewGuid().ToString();
+$redirectUrl = "https://localhost/12345"
+
+az ad app create --display-name $adName --identifier-uris "https://$tenantDomain/$uniqueGUID" --reply-urls $redirecturl 
+#--required-resource-accesses "$executingScriptDirectory/AADApp/requiredResourceManifest.json"
+
+$appId = $(az ad app list --display-name $adName --query [].appId -o tsv);
+
+az ad app permission admin-consent --id $appId;
+
+$json = ConvertObjectToJson $(az ad app credential reset --id $appId)
+$clientSecret = $json.password
+
+#manual flow via urls
+
+$clientid = "YOURID"
+#$clientsecret = "YOURSECRET"
+
+$clientid = $appId;
+$scope = "https%3A%2F%2Fgraph.microsoft.com%2F.default"
+$granttype = "client_credentials"
+
+$url = "https://login.microsoftonline.com/$tenantDomain/adminconsent?client_id=$clientId&state=12345&redirect_uri=$redirectUrl"
+start-process $url
+
+$url = "https://login.microsoftonline.com/$tenantDomain/oauth2/v2.0/token?client_id=$clientId&scope=$scope&client_secret=$clientsecret&grant_type=$granttype"
+
+#do a post...
+

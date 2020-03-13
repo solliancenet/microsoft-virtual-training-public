@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast launch="app-defined-string">
+  <visual>
+    <binding template="ToastGeneric">
+      <text>Universal Windows Platform</text>
+      <text>Start creating beautiful apps!</text>
+      <image placement="appLogoOverride" src="Assets/MicrosoftLogo.png" />
+    </binding>
+  </visual>
+  <actions>
+    <action activationType="foreground" content="start now" arguments="details" imageUri="Assets/CheckIcon.png"/>
+    <action activationType="background" content="start later" arguments="later" imageUri="Assets/CloseIcon.png"/>
+  </actions>
+</toast>

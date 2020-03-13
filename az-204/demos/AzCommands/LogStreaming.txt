@@ -1,0 +1,13 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+#PowerShell / AzureCLI
+
+# Replace the following URL with a public GitHub repo URL
+$webappname="az204app"
+$rgName = "cjg-az204"
+
+az webapp log config --docker-container-logging filesystem --name $webAppName --resource-group $rgName
+
+az webapp log tail --name $webAppName --resource-group $rgName

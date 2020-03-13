@@ -1,0 +1,19 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+
+$namespace = "cjgaz204"
+$hubname = "myhub"
+$ruleName = "Listen"
+
+# Create a resource group
+az group create -n $rgName -l $location
+
+#create notification hub
+az notification-hub create --resource-group $rgName --namespace-name $namespace --name $hubname --location $location --sku "Free"
+
+#send a message
+az notification-hub test-send --resource-group $rgName --namespace-name $namespace --notification-hub-name $hubname --notification-format gcm --message "test notification"

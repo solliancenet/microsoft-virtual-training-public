@@ -1,0 +1,71 @@
+﻿function ConvertObject($data)
+{
+    $str = "";
+    foreach($c in $data)
+    {
+        $str += $c;
+    }
+
+    return $str;
+}
+
+function ConvertObjectToJson($data)
+{
+    $json = ConvertObject $data;
+
+    return ConvertFrom-json $json;
+}
+
+##################PART 1################################
+
+az login
+
+az account set --subscription "YOURSUB"
+
+#PowerShell / AzureCLI
+
+# Replace the following URL with a public GitHub repo URL
+$gitrepo="https://github.com/Azure-Samples/php-docs-hello-world"
+$webappname="az204app"
+$rgName = "cjg-az204-linux"
+$acrname = "cjgaz204acr"
+$accessToken = ""
+$acrUsername = ""
+$acrPassword = ""
+
+# Create a resource group.
+az group create --location westus2 --name $rgname
+
+# Create an App Service plan for linux (required for containers).
+az appservice plan create -n "$webappname-linux" -g $rgname --is-linux -l westus2 --sku B1 --number-of-workers 1
+
+# create an ACR
+az acr create --resource-group $rgName --name $acrname --sku Basic
+
+#enable admin to get password
+az acr update --resource-group $rgName --name $acrname --admin-enabled $true
+
+# get credentials
+$json = ConvertObjectToJson $(az acr credential show --name $acrname --output json)
+
+$acrPassword = $json.passwords[0].value;
+$acrUserName = $json.username;
+
+#download a container image
+git clone https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service.git
+cd mslearn-deploy-run-container-app-service/dotnet
+
+#upload the image
+az acr build --registry $acrname --image webimage .
+
+##################PART 2################################
+
+# Create a web app
+az webapp create --resource-group $rgName --plan "$webappname-linux" --name "$webappname-linux" --deployment-container-image-name "$acrname.azurecr.io/webimage:latest"
+
+#set the container later
+az webapp config container set --docker-custom-image-name webimage --docker-registry-server-password $acrpassword --docker-registry-server-url "https://$acrname.azurecr.io" --docker-registry-server-user $acrusername --name "$webappname-linux" --resource-group $rgname
+
+#add continuous integration (optional)
+az acr task create --registry $registryname --name buildwebapp --image webimage --context https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service.git --branch master --file Dockerfile --git-access-token $accessToken
+

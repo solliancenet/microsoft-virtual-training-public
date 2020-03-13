@@ -1,0 +1,27 @@
+﻿#https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-create
+
+az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+$vmName = "myVM"
+$username = "s2admin"
+$password = "az204rock`$12345"
+$scriptUrl = "https://raw.githubusercontent.com/microsoft/MCW-Security-baseline-on-Azure/master/Hands-on%20lab/Scripts/Install_IIS.zip"
+$scriptName = "Install_IIS.ps1"
+
+az group create --name $rgName --location $location
+
+az vm create --resource-group $rgName --name $vmName --image win2016datacenter --admin-username $username --admin-password $password
+
+##################### PART 2 ########################################
+
+#Set-AzVMCustomScriptExtension -ResourceGroupName $rgName -VMName $vmName -Location $location -FileUri $scriptUrl -Run $scriptName -Name SetupIIS
+
+$settings = "{`"fileUris`":[`"$scriptUrl`"],`"commandToExecute`":`"./$scriptName`"}"
+remove-item "script-config.json" -ea silentlycontinue
+add-content "script-config.json" $settings
+
+az vm extension set --resource-group $rgName --vm-name $vmName --name CustomScriptExtension --publisher Microsoft.Compute --version 1.9 --settings ./script-config.json

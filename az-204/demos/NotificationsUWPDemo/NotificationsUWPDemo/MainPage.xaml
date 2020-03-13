@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="NotificationsUWPDemo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:NotificationsUWPDemo"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Button x:Name="ToastRichVisualContentButton" Grid.Row="0" HorizontalAlignment="Center" Content="ToastRichVisualContent" Click="ToastRichVisualContentButton_Click"/>
+        <Button x:Name="ToastWithActionSample1Button" Grid.Row="1" HorizontalAlignment="Center" Content="ToastWithActionSample1" Click="ToastWithActionSample1Button_Click" />
+        <Button x:Name="ToastWithActionSample2Button" Grid.Row="2" HorizontalAlignment="Center" Content="ToastWithActionSample2" Click="ToastWithActionSample2Button_Click" />
+        <Button x:Name="ToastWithTextInputAndActionsButton" Grid.Row="3" HorizontalAlignment="Center" Content="ToastWithTextInputAndActions" Click="ToastWithTextInputAndActionsButton_Click" />
+        <Button x:Name="ToastReminderNotificationButton" Grid.Row="4" HorizontalAlignment="Center" Content="ToastReminderNotification" Click="ToastReminderNotificationButton_Click" />
+        
+    </Grid>
+</Page>

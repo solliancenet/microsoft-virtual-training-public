@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="47b9343692fa4fb691d42865645aec2f" Name="Diagram1">
+        <EntityTypeShape EntityType="InsuranceModel.Claim" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InsuranceModel.Order" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InsuranceModel.User" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InsuranceModel.UserVehicle" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InsuranceModel.Vehicle" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InsuranceModel.Accident" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="InsuranceModel.Agent" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="InsuranceModel.Participant" Width="1.5" PointX="7.375" PointY="4.75" />
+        <EntityTypeShape EntityType="InsuranceModel.Policy" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="InsuranceModel.vAgentUser" Width="1.5" PointX="10.5" PointY="0.75" />
+        <AssociationConnector Association="InsuranceModel.FK_Accident_User" />
+        <AssociationConnector Association="InsuranceModel.FK_Accident_Vehicle" />
+        <AssociationConnector Association="InsuranceModel.FK_Order_User" />
+        <AssociationConnector Association="InsuranceModel.FK_Participant_User" />
+        <AssociationConnector Association="InsuranceModel.FK_Policy_User" />
+        <AssociationConnector Association="InsuranceModel.FK_UserVehicle_User" />
+        <AssociationConnector Association="InsuranceModel.FK_UserVehicle_Vehicle" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

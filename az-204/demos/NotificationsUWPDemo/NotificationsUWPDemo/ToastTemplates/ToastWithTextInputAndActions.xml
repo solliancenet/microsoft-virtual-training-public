@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast launch="developer-defined-string">
+  <visual>
+    <binding template="ToastGeneric">
+      <text>Daniel K.</text>
+      <text>Shall we meet up at 10?</text>
+      <image placement="appLogoOverride" src="Assets/MicrosoftLogo.png" />
+    </binding>
+  </visual>
+  <actions>
+    <input id="message" type="text" placeHolderContent="type reply here" />
+    <action activationType="background" content="reply" arguments="reply" />
+    <action activationType="foreground" content="video call" arguments="video" />
+  </actions>
+</toast>

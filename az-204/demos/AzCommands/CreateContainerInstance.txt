@@ -1,0 +1,18 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+#PowerShell / AzureCLI
+
+$rgName = "cjg-az204"
+$containername = "cjgaz204c"
+$dnsName = "cjg-aci-demo"
+
+# Create a resource group.
+az group create --location westus2 --name $rgname
+
+az container create --resource-group $rgName --name $containerName --image mcr.microsoft.com/azuredocs/aci-helloworld --dns-name-label $dnsName --ports 80
+
+az container show --resource-group $rgName --name $containerName --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
+
+az container logs --resource-group $rgName --name $containerName

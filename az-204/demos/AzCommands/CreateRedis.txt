@@ -1,0 +1,28 @@
+﻿function ConvertObject($data)
+{
+    $str = "";
+    foreach($c in $data)
+    {
+        $str += $c;
+    }
+
+    return $str;
+}
+
+function ConvertObjectToJson($data)
+{
+    $json = ConvertObject $data;
+
+    return ConvertFrom-json $json;
+}
+
+az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+$cname = "az204"
+
+# Create a Basic C0 (256 MB) Redis Cache
+az redis create --name $cName --resource-group $rgName --location $location --sku Basic --vm-size C0

@@ -1,0 +1,22 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+$storageName="cjgaz204"
+$funcName="az204apifunc"
+$planName = "az204funcapp"
+
+# Create a resource resourceGroupName
+az group create --name $rgName --location $location
+
+# Create an azure storage account
+az storage account create --name $storageName --location $location --resource-group $rgName --sku Standard_LRS --kind StorageV2
+
+# Create a Premium plan
+az functionapp plan create --name $planName --resource-group $rgName --location $location --sku EP1
+
+# Create a Function App
+az functionapp create --name $funcName --storage-account $storageName --plan $planName --resource-group $rgName --runtime dotnet --os-type Windows
+  

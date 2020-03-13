@@ -1,0 +1,35 @@
+﻿az login
+
+az account set --subscription "YOURSUB"
+
+$rgName = "cjg-az204"
+$location = "westus2"
+
+$namespace = "cjgaz204sbns"
+$hubname = "myhub"
+$queueName = "basicqueue"
+$topicName = "drivers"
+$subName = "driver01"
+
+# Create a resource group
+az group create -n $rgName -l $location
+
+# Create a Service Bus messaging namespace with a unique name
+az servicebus namespace create --resource-group $rgName --name $namespace --location $location
+
+# Create a Service Bus queue
+az servicebus queue create --resource-group $rgName --namespace-name $namespace --name $queueName
+
+# Get the connection string for the namespace
+$connectionString=$(az servicebus namespace authorization-rule keys list --resource-group $rgName --namespace-name $namespace --name RootManageSharedAccessKey --query primaryConnectionString --output tsv)
+
+write-host $connectionString
+
+##############################################
+
+# Create a service bus topic
+az servicebus topic create --resource-group $rgName --namespace-name $namespace --name $topicName
+
+# create a service bus topic subscription
+az servicebus topic subscription create --resource-group $rgName --namespace-name $namespace --topic-name $topicName --name $subName
+

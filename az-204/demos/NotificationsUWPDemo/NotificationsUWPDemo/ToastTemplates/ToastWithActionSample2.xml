@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast launch="app-defined-string">
+  <visual>
+    <binding template="ToastGeneric">
+      <text>Cortana</text>
+      <text>We noticed that you are near Warsaw.</text>
+      <text>Do you need a hotel?</text>
+      <image placement="appLogoOverride" src="Assets/MicrosoftLogo.png" />
+    </binding>
+  </visual>
+  <actions>
+    <action activationType="foreground" content="list" arguments="list" />
+    <action activationType="protocol" content="show map" arguments="bingmaps:?q=hotel" />
+  </actions>
+</toast>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toast scenario="reminder" launch="developer-pre-defined-string">
+  <visual>
+    <binding template="ToastGeneric">
+      <text>Holidays</text>
+      <text>You start them this Monday!</text>
+      <text>Check the callendar</text>
+      <image placement="appLogoOverride" src="Assets/MicrosoftLogo.png" />
+      <image placement="inline" src="Assets/Windows10Logo.png" />
+    </binding>
+  </visual>
+  <actions>
+    <action activationType="background" content="RSVP" arguments="rsvp" />
+    <action activationType="background" content="Reminder me later" arguments="later" />
+  </actions>
+</toast>
